@@ -1,0 +1,76 @@
+---
+title: "Midterm 1"
+author: "Yanlin Li"
+format: pdf
+---
+
+## Read in the data
+
+```{r read-data, message = F}
+
+library(tidyverse)
+library(tidymodels)
+library(car)
+
+beijing <- read_csv("beijing.csv")
+
+```
+
+## Exercise 1
+
+```{r ex-1}
+
+m1 <- lm(SO2 ~ month + TEMP + PRES + DEWP + RAIN + wd + WSPM, data = beijing)
+summary(m1)
+
+```
+
+## Exercise 5
+
+```{r ex-5}
+
+m1_augmented <- augment(m1)
+
+ggplot(m1_augmented, aes(x= .fitted, y = .resid)) +
+  geom_point()+
+  geom_hline(yintercept = 0, color = "darkred") + 
+  labs(x = "Fitted (predicted) value", y = "Residual") +
+  ggtitle("Bad linearity and constant variance")
+
+ggplot(m1_augmented, aes (sample = .resid)) +
+  stat_qq() + 
+  stat_qq_line() + 
+  theme_bw() + 
+  labs(x= "Theoretical quantiles",
+       y = "Sample quantile") +
+  ggtitle("Not Normal Distribution in the Q-Q Plot")
+
+```
+
+## Exercise 6
+
+```{r ex-6}
+
+586.28527 - 0.95756 * 2 - 0.90373 * 1.6 - 0.53682 * 1013.7 - 0.27520 * (-3.7) - 0.53035 * 0 - 2.48948 * 1
+
+15 - 37.27851
+
+```
+
+
+## Exercise 7
+
+```{r ex-7}
+
+
+
+```
+
+
+## Exercise 8
+
+```{r ex-8}
+
+
+
+```
