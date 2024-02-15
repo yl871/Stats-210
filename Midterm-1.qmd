@@ -62,6 +62,24 @@ ggplot(m1_augmented, aes (sample = .resid)) +
 
 ```{r ex-7}
 
+m1_augmented %>%
+  arrange(desc(abs(.resid)))
+
+beijing <- beijing %>%
+  drop_na(SO2)
+  # mutate(residual = abs(SO2 - predict(m1)))
+
+set1 <- beijing|>
+  group_by(year, month) |>
+  summarise(resid = residual)
+  
+set2 <- set1|>
+  group_by(year, month) |>
+  summarise(average_prediction_error = mean(resid))
+
+set3 <- set1|>
+  group_by(year, month) |>
+  summarise(variability_said_predictions = sd(resid), .groups = "rowwise")
 
 
 ```
@@ -71,6 +89,10 @@ ggplot(m1_augmented, aes (sample = .resid)) +
 
 ```{r ex-8}
 
+over_prediction <- sum(m1_augmented$.resid < 0)
+print(paste("Numbers of over-predictions",over_prediction))
+under_prediction <- sum(m1_augmented$.resid > 0)
+print(paste("Numbers of under-predictions",under_prediction))
 
 
 ```
