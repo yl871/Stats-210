@@ -1,0 +1,42 @@
+---
+title: "Midterm 2"
+author: "Yanlin Li"
+format: pdf
+---
+
+## Read in the data
+
+```{r read-data, message = F}
+
+library(tidyverse)
+library(tidymodels)
+library(car)
+
+beijing <- read_csv("beijing_mod.csv")
+
+```
+
+## Exercise 2
+
+```{r ex-2}
+
+m1 <- lm(SO2 ~ as.factor(season) + TEMP + PRES + TEMP * PRES, data = beijing)
+summary(m1)
+
+```
+
+## Exercise 3
+
+```{r ex-3}
+
+beijing2 <- beijing %>%
+  mutate(precipitation = ifelse(RAIN == 0.0,
+    "No", "Yes"))
+
+m2 <- lm(log10(SO2) ~ as.factor(season) + TEMP + log2(WSPM) + as.factor(precipitation) + PRES + log2(WSPM) * as.factor(season), data = beijing2)
+summary(m2)
+
+```
+
+
+
