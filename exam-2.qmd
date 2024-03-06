@@ -11,6 +11,8 @@ format: pdf
 library(tidyverse)
 library(tidymodels)
 library(car)
+library(dplyr)
+library(stats)
 
 beijing <- read_csv("beijing_mod.csv")
 
@@ -33,10 +35,29 @@ beijing2 <- beijing %>%
   mutate(precipitation = ifelse(RAIN == 0.0,
     "No", "Yes"))
 
+beijing2$season <- factor(beijing2$season, ordered = FALSE)
+beijing2$season <- relevel(beijing2$season, ref = "summer")
 m2 <- lm(log10(SO2) ~ as.factor(season) + TEMP + log2(WSPM) + as.factor(precipitation) + PRES + log2(WSPM) * as.factor(season), data = beijing2)
 summary(m2)
 
 ```
 
+## Exercise 4
 
+```{r ex-4}
+
+10 ^ (-0.012)
+10 ^ 0.735
+
+10 ^ 0.074
+10 ^ (0.074 - 0.049)
+10 ^ (0.074 - 0.245)
+10 ^ (0.074 - 0.146)
+
+```
+
+Summer: log10(SO2) = intercept + 0.074log2(WSPM)
+Fall: log10(SO2) = intercept + 0.074log2(WSPM) - 0.049log2(WSPM) = intercept + 0.025log2(WSPM)
+Winter: log10(SO2) = intercept + 0.074log2(WSPM) - 0.245log2(WSPM) = intercept - 0.171log2(WSPM)
+Spring: log10(SO2) = intercept + 0.074log2(WSPM) - 0.146log2(WSPM) = intercept - 0.072log2(WSPM)
 
